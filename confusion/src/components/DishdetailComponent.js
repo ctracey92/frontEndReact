@@ -32,7 +32,7 @@ class Dishdetail extends Component {
     };
 
     const renderComments = (dish) => {
-      if (dish !== null) {
+      if (dish !== null && dish.comments !== null) {
         const items = dish.comments.map((i) => {
           return (
             <li key={i.id}>
