@@ -6,6 +6,7 @@ import {
   CardBody,
   CardTitle,
 } from "reactstrap";
+import Moment from "react-moment";
 
 class Dishdetail extends Component {
 
@@ -38,7 +39,7 @@ class Dishdetail extends Component {
               {i.comment}
               <br />
               <br />
-              --{i.author} {i.date}
+              --{i.author}, <Moment format="MMM DD, YYYY">{i.date}</Moment>
               <br />
               <br />
             </li>
