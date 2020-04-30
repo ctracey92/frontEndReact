@@ -1,18 +1,11 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-} from "reactstrap";
+import { Card, CardImg, CardText, CardBody, CardTitle, Container } from "reactstrap";
 import Moment from "react-moment";
 
 class Dishdetail extends Component {
-
   render() {
     const renderDish = (dish) => {
-      if (dish !== null) {
+      if (dish !== undefined) {
         return (
           <Card>
             <CardImg width="100%" src={dish.image} alt={dish.name} />
@@ -32,7 +25,7 @@ class Dishdetail extends Component {
     };
 
     const renderComments = (dish) => {
-      if (dish !== null && dish.comments !== null) {
+      if (dish !== undefined && dish.comments !== null) {
         const items = dish.comments.map((i) => {
           return (
             <li key={i.id}>
@@ -55,14 +48,18 @@ class Dishdetail extends Component {
         return <div></div>;
       }
     };
-    
+
     return (
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">{renderDish(this.props.dish)}</div>
-        <div className="col-12 col-md-5 m-1">
-          {renderComments(this.props.dish)}
+      <Container>
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            {renderDish(this.props.dish)}
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            {renderComments(this.props.dish)}
+          </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }
