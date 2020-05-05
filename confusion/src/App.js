@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import MainComponent from "./components/MainComponent";
-import './App.css';
+import "./App.css";
+import {BrowserRouter} from "react-router-dom";
 
 class App extends Component {
-
   render() {
     return (
       <div>
-        <MainComponent />
+        <BrowserRouter>
+          <MainComponent />
+        </BrowserRouter>
       </div>
     );
   }
