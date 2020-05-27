@@ -41,7 +41,9 @@ class CommentForm extends Component {
   render() {
     return (
       <>
-        <Button onClick={this.toggle}>Comment</Button>
+        <Button onClick={this.toggle}>
+          <i class="fa fa-pencil" aria-hidden="true"></i> Submit Comment
+        </Button>
         <Modal isOpen={this.state.open} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Submit Comment</ModalHeader>
           <ModalBody>
@@ -180,8 +182,8 @@ const DishDetail = (props) => {
           </div>
           <div className="col-12 col-md-5 m-1">
             <RenderComments comments={props.comments} />
+            <CommentForm />
           </div>
-          <CommentForm />
         </div>
       </Container>
     );
