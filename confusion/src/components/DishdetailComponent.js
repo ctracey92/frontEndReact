@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -8,9 +8,62 @@ import {
   Container,
   Breadcrumb,
   BreadcrumbItem,
+  Modal,
+  Button,
+  ModalBody,
+  Row,
+  Label,
+  Col,
 } from "reactstrap";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { Control, LocalForm, Errors } from "react-redux-form";
+
+const maxLength = (length) => (val) => !val || val.length <= length;
+const minLength = (length) => (val) => val && val.length >= length;
+
+class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggle = this.toggle.bind(this);
+
+  }
+
+  handleSubmit(values) {
+    console.log("Current State is: " + JSON.stringify(values));
+    alert("Current State is: " + JSON.stringify(values));
+  }
+
+  toggle = () => this.setState({open: !this.state.open});
+
+  render() {
+    return (
+      <>
+      <Button onClick={this.toggle}>Comment</Button>
+      <Modal isOpen={this.state.open} toggle={this.toggle}>
+        <div>
+          <p>this has stuff in it</p>
+          <Button onClick={this.toggle} className="btn-danger">Close</Button>
+        </div>
+        {/* <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+          <Row className="form-group">
+            <Label htmlFor="rating" md={2}>Rating</Label>
+            <Col md={10}>
+              <Control.select>
+
+              </Control.select>
+            </Col>
+          </Row>
+        </LocalForm> */}
+      </Modal>
+      </>
+    );
+  }
+}
 
 const RenderDish = ({ dish }) => {
   if (dish !== undefined) {
@@ -82,6 +135,7 @@ const DishDetail = (props) => {
           <div className="col-12 col-md-5 m-1">
             <RenderComments comments={props.comments} />
           </div>
+          <CommentForm />
         </div>
       </Container>
     );
