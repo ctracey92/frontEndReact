@@ -11,9 +11,9 @@ import {
   Modal,
   Button,
   ModalBody,
+  ModalHeader,
   Row,
   Label,
-  Col,
 } from "reactstrap";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
@@ -27,39 +27,85 @@ class CommentForm extends Component {
     super(props);
     this.state = {
       open: false,
-    }
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggle = this.toggle.bind(this);
-
   }
-
+  toggle = () => this.setState({ open: !this.state.open });
   handleSubmit(values) {
     console.log("Current State is: " + JSON.stringify(values));
     alert("Current State is: " + JSON.stringify(values));
+    this.toggle();
   }
-
-  toggle = () => this.setState({open: !this.state.open});
 
   render() {
     return (
       <>
-      <Button onClick={this.toggle}>Comment</Button>
-      <Modal isOpen={this.state.open} toggle={this.toggle}>
-        <div>
-          <p>this has stuff in it</p>
-          <Button onClick={this.toggle} className="btn-danger">Close</Button>
-        </div>
-        {/* <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-          <Row className="form-group">
-            <Label htmlFor="rating" md={2}>Rating</Label>
-            <Col md={10}>
-              <Control.select>
-
-              </Control.select>
-            </Col>
-          </Row>
-        </LocalForm> */}
-      </Modal>
+        <Button onClick={this.toggle}>Comment</Button>
+        <Modal isOpen={this.state.open} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>Submit Comment</ModalHeader>
+          <ModalBody>
+            <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+              <Container>
+                <Row className="form-group">
+                  <Label for="rating">Rating</Label>
+                  <Control.select
+                    model=".rating"
+                    name="rating"
+                    id="rating"
+                    className="form-control"
+                  >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </Control.select>
+                </Row>
+              </Container>
+              <Row className="form-group">
+                <Container>
+                  <Label for="author">Your Name</Label>
+                  <Control.text
+                    model=".author"
+                    name="select"
+                    id="author"
+                    placeholder="Your Name"
+                    className="form-control"
+                    validators={{
+                      minLength: minLength(3),
+                      maxLength: maxLength(15),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".author"
+                    show="touched"
+                    messages={{
+                      minLength: "Must be greater than 2 characters",
+                      maxLength: "Must be 15 characters or less",
+                    }}
+                  />
+                </Container>
+              </Row>
+              <Row className="form-group">
+                <Container>
+                  <Label for="comment">Comment</Label>
+                  <Control.textarea
+                    model=".comment"
+                    name="comment"
+                    id="comment"
+                    className="form-control"
+                    rows="6"
+                  />
+                </Container>
+              </Row>
+              <Button type="submit" className="btn-danger">
+                Submit
+              </Button>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
       </>
     );
   }
