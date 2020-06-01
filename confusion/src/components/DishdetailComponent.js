@@ -19,6 +19,8 @@ import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
+import { Loading } from "./LoadingComponent";
+
 const maxLength = (length) => (val) => !val || val.length <= length;
 const minLength = (length) => (val) => val && val.length >= length;
 
@@ -46,7 +48,7 @@ class CommentForm extends Component {
     return (
       <>
         <Button onClick={this.toggle}>
-          <i class="fa fa-pencil" aria-hidden="true"></i> Submit Comment
+          <i className="fa fa-pencil" aria-hidden="true"></i> Submit Comment
         </Button>
         <Modal isOpen={this.state.open} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Submit Comment</ModalHeader>
@@ -165,7 +167,24 @@ const RenderComments = ({ comments, addComment, dishId }) => {
 };
 
 const DishDetail = (props) => {
-  if (props.dish != null) {
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  }
+  else if (props.dish != null) {
     return (
       <Container>
         <Breadcrumb>
@@ -191,7 +210,6 @@ const DishDetail = (props) => {
               addComment={props.addComment}
               dishId={props.dish.id}
             />
-            
           </div>
         </div>
       </Container>
