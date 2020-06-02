@@ -18,8 +18,6 @@ function RenderCard({ item, isLoading, errMess }) {
   } else {
     return (
       <Card>
-        <h4>this</h4>
-        {console.log(item, "CURRENT ITEM")}
         <CardImg src={baseUrl + item.image} alt={item.name} />
         <CardBody>
           <CardTitle>{item.name}</CardTitle>
