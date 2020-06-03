@@ -2,15 +2,50 @@ import { actionTypes } from "react-redux-form";
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
 
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
   type: ActionTypes.ADD_COMMENT,
-  payload: {
+  payload: comment,
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+  const newComment = {
     dishId: dishId,
     rating: rating,
     author: author,
     comment: comment,
-  },
-});
+  };
+  newComment.date = new Date().toISOString();
+
+  return fetch(baseUrl + "comments", {
+    method: "POST",
+    body: JSON.stringify(newComment),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (res) => {
+        if (res.ok) {
+          return res;
+        } else {
+          let err = new Error(`Error ${res.status}: ${res.statusText}`);
+          err.res = res;
+          throw err;
+        }
+      },
+      (error) => {
+        let errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((res) => res.json())
+    .then((res) => dispatch(addComment(res)))
+    .catch((err) => {
+      console.log("POST COMMENTS ", err.message);
+      alert("Your comment could not be poster\nError: " + err.message);
+    });
+};
 
 export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
