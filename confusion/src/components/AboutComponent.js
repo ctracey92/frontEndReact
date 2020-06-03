@@ -13,37 +13,40 @@ import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
 
 const RenderLeader = ({ leader, isLoading, errMess }) => {
-  if (isLoading) {
-    return <Loading />;
-  } else if (errMess) {
-    return <h4>{errMess}</h4>;
-  } else {
-    return (
-      <Media className="mb-4">
-        <Media left href="#" className="pr-5">
-          <Media object src={baseUrl + leader.image} at={leader.name} />
-        </Media>
-        <Media body>
-          <Media heading>{leader.name}</Media>
-          {leader.designation}
-          <br />
-          <br />
-          {leader.description}
-        </Media>
+  return (
+    <Media className="mb-4">
+      <Media left href="#" className="pr-5">
+        <Media object src={baseUrl + leader.image} at={leader.name} />
       </Media>
-    );
-  }
+      <Media body>
+        <Media heading>{leader.name}</Media>
+        {leader.designation}
+        <br />
+        <br />
+        {leader.description}
+      </Media>
+    </Media>
+  );
 };
 
 function About(props) {
   const leaders = props.leaders.leaders.map((leader) => {
     return (
       <div key={leader.id}>
-        {" "}
         <RenderLeader leader={leader} />
       </div>
     );
   });
+
+  let section = <div></div>;
+
+  if (props.leaders.isLoading) {
+    section = <Loading />;
+  } else if (props.leaders.errMess) {
+    section = <h4>{props.leaders.errMess}</h4>;
+  } else {
+  section = <Media list>{leaders}</Media>
+  }
 
   return (
     <div className="container">
@@ -120,9 +123,7 @@ function About(props) {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <div className="col-12">
-          <Media list>{leaders}</Media>
-        </div>
+        <div className="col-12">{section}</div>
       </div>
     </div>
   );
