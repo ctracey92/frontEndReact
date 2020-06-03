@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { TransitionGroup, CSSTransition} from "react-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import Home from "./HomeComponent";
 import Menu from "./MenuComponent";
@@ -16,6 +16,7 @@ import {
   fetchDishes,
   fetchComments,
   fetchPromos,
+  fetchLeaders,
 } from "../redux/ActionCreators";
 
 import { actions } from "react-redux-form";
@@ -41,6 +42,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchPromos: () => {
     dispatch(fetchPromos());
   },
+  fetchLeaders: () => {
+    dispatch(fetchLeaders());
+  },
   resetFeedbackForm: () => {
     dispatch(actions.reset("feedback"));
   },
@@ -52,14 +56,14 @@ class MainComponent extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchLeaders();
     this.props.fetchDishes();
-    this.props.fetchComments();
     this.props.fetchPromos();
+    this.props.fetchComments();
   }
 
   render() {
     const HomePage = () => {
-      console.log(this.props.promotions, "CHECK HERE_________________________");
       return (
         <Home
           dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
@@ -72,7 +76,11 @@ class MainComponent extends Component {
           }
           promoLoading={this.props.promotions.isLoading}
           promoErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          leader={
+            this.props.leaders.leaders.filter((leader) => leader.featured)[0]
+          }
+          leadersLoading={this.props.leaders.isLoading}
+          leadersErrMess={this.props.leaders.errMess}
         />
       );
     };
@@ -95,7 +103,6 @@ class MainComponent extends Component {
         />
       );
     };
-
     return (
       <div>
         <Header />
