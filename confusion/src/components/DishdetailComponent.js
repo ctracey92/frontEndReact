@@ -15,12 +15,13 @@ import {
   Row,
   Label,
 } from "reactstrap";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
 import { Loading } from "./LoadingComponent";
-import {baseUrl} from "../shared/baseUrl";
+import { baseUrl } from "../shared/baseUrl";
 
 const maxLength = (length) => (val) => !val || val.length <= length;
 const minLength = (length) => (val) => val && val.length >= length;
@@ -124,13 +125,20 @@ const RenderDish = ({ dish }) => {
   if (dish !== undefined) {
     console.log(dish);
     return (
-      <Card>
-        <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
-        <CardBody>
-          <CardTitle>{dish.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: "scale(0.5) translateY(-50%)",
+        }}
+      >
+        <Card>
+          <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle>{dish.name}</CardTitle>
+            <CardText>{dish.description}</CardText>
+          </CardBody>
+        </Card>
+      </FadeTransform>
     );
   } else {
     return (
@@ -145,20 +153,24 @@ const RenderComments = ({ comments, postComment, dishId }) => {
   if (comments !== undefined) {
     const items = comments.map((i) => {
       return (
-        <li key={i.id}>
-          {i.comment}
-          <br />
-          <br />
-          --{i.author}, <Moment format="MMM DD, YYYY">{i.date}</Moment>
-          <br />
-          <br />
-        </li>
+        <Fade in>
+          <li key={i.id}>
+            {i.comment}
+            <br />
+            <br />
+            --{i.author}, <Moment format="MMM DD, YYYY">{i.date}</Moment>
+            <br />
+            <br />
+          </li>
+        </Fade>
       );
     });
     return (
       <div>
         <h4>Comments</h4>
-        <ul className="list-unstyled">{items}</ul>
+        <ul className="list-unstyled">
+          <Stagger in>{items}</Stagger>
+        </ul>
         <CommentForm dishId={dishId} postComment={postComment} />
       </div>
     );
@@ -184,8 +196,7 @@ const DishDetail = (props) => {
         </div>
       </div>
     );
-  }
-  else if (props.dish != null) {
+  } else if (props.dish != null) {
     return (
       <Container>
         <Breadcrumb>
