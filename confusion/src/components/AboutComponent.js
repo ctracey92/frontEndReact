@@ -7,6 +7,7 @@ import {
   CardHeader,
   Media,
 } from "reactstrap";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 import { Link } from "react-router-dom";
 
 import { Loading } from "./LoadingComponent";
@@ -14,27 +15,36 @@ import { baseUrl } from "../shared/baseUrl";
 
 const RenderLeader = ({ leader, isLoading, errMess }) => {
   return (
-    <Media className="mb-4">
-      <Media left href="#" className="pr-5">
-        <Media object src={baseUrl + leader.image} at={leader.name} />
+    <FadeTransform
+      in
+      transformProps={{
+        exitTransform: "scale(0.5) translateY(-50%)",
+      }}
+    >
+      <Media className="mb-4">
+        <Media left href="#" className="pr-5">
+          <Media object src={baseUrl + leader.image} at={leader.name} />
+        </Media>
+        <Media body>
+          <Media heading>{leader.name}</Media>
+          {leader.designation}
+          <br />
+          <br />
+          {leader.description}
+        </Media>
       </Media>
-      <Media body>
-        <Media heading>{leader.name}</Media>
-        {leader.designation}
-        <br />
-        <br />
-        {leader.description}
-      </Media>
-    </Media>
+    </FadeTransform>
   );
 };
 
 function About(props) {
   const leaders = props.leaders.leaders.map((leader) => {
     return (
-      <div key={leader.id}>
-        <RenderLeader leader={leader} />
-      </div>
+      <Fade in>
+        <div key={leader.id}>
+          <RenderLeader leader={leader} />
+        </div>
+      </Fade>
     );
   });
 
@@ -45,7 +55,11 @@ function About(props) {
   } else if (props.leaders.errMess) {
     section = <h4>{props.leaders.errMess}</h4>;
   } else {
-  section = <Media list>{leaders}</Media>
+    section = (
+      <Media list>
+        <Stagger in>{leaders}</Stagger>
+      </Media>
+    );
   }
 
   return (
